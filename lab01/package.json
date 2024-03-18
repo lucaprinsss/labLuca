@@ -1,0 +1,14 @@
+{
+  "name": "lab01",
+  "version": "1.0.0",
+  "description": "Esercitazione laboratorio 1",
+  "main": "lab01_1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.10"
+  }
+}
