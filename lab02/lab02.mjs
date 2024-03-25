@@ -5,7 +5,7 @@ const db = new sqlite.Database('films.db', (err) => {  //non sto passando il nom
     if (err) throw err;
 });
 
-function Film(id, title, isFavorite=false, rating=0, watchDate=null, userId=1) {
+function Film(id, title, isFavorite=false, rating=null, watchDate=null, userId=1) {
     this.id = id;
     this.title = title;
     this.isFavorite = isFavorite;
@@ -127,12 +127,92 @@ function FilmLibrary() {
             });
         });
     }
+
+    this.ratingGreaterThanFilm = (rating) => {  //greater or equal to the passed rating
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM films WHERE rating>=?';
+            db.all(sql, rating,(err, rows) => {
+                if (err) {
+                    reject (err);
+                } else if (rows !== undefined) {
+                    const result = rows.map(row => new Film(row.id, row.title, row.isFavorite, row.rating, row.watchDate, row.userId));
+                    resolve (result);
+                } else {
+                    reject ('No films found');
+                }
+            });
+        });
+    }
+
+    this.titleContainsFilm = (string) => {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM films WHERE title LIKE ?';
+            string = '%' + string + '%';
+            db.all(sql, string,(err, rows) => {
+                if (err) {
+                    reject (err);
+                } else if (rows !== undefined) {
+                    const result = rows.map(row => new Film(row.id, row.title, row.isFavorite, row.rating, row.watchDate, row.userId));
+                    resolve (result);
+                } else {
+                    reject ('No films found');
+                }
+            });
+        });
+    }
+
+    this.store = (film) => {  //ricereve un oggetto film come parametro
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO films(title, isFavorite, rating, watchDate, userId) VALUES (?,?,?,DATE(?),?)';
+            let watchDate = null;  //creo una variabile così da non modificare la data del film passato
+            if(film.watchDate !== null)
+                watchDate = film.watchDate.add(1,'hour').toISOString(); //aggiungo un ora per avere la data di oggi
+            db.run(sql, film.title, film.isFavorite, film.rating, watchDate, film.userId, function (err) {
+                if (err) {
+                    reject (err);
+                } else {
+                    const result = 'Film inserted successfully, id is: ' + this.lastID;
+                    resolve (result);
+                }
+            });
+        });
+    }
+
+    this.delete = (id) => {  //ricereve l'id del film come parametro
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM films WHERE id = ?';
+            db.run(sql, id, function (err) {
+                if (err) {
+                    reject (err);
+                } else {
+                    const result = `Film with id ${id} is successfully deleted`;
+                    resolve (result);
+                }
+            });
+        });
+    }
+
+    this.deleteWatchDate = (id) => {  //ricereve l'id del film come parametro
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE films SET watchDate = null WHERE id = ?';
+            db.run(sql, id, function (err) {
+                if (err) {
+                    reject (err);
+                } else {
+                    const result = `WatchDate of the film with id ${id} is successfully deleted`;
+                    resolve (result);
+                }
+            });
+        });
+    }
 }
+
 
 async function main() {
     const libreria = new FilmLibrary();
-    const films = await libreria.beforeDateFilm('2024-03-22');
-    films.forEach(film => console.log(film.toString()));
+    //const film = new Film('', 'Prova2', 0, 1, '2024-03-25');
+    let result = await libreria.deleteWatchDate(17);
+    console.log('Risultato: '+result);
     //console.log('Number of films watched today: ' + films.length);
 }
 main();
