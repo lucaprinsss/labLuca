@@ -1,0 +1,21 @@
+
+/* increase default icon size */
+i.bi {
+    font-size: 25px;
+}
+
+i.bi-star-fill, i.bi-star:hover {
+    color: gold;
+}
+
+nav nav-item active{
+    background-color: blue;
+}
+
+/* Add film button */
+.fixed-right-bottom {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 1;
+}
