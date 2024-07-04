@@ -1,12 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { useState } from "react";
 import dayjs from 'dayjs';
 
 import Header from './Header.jsx';
 import Filters from './Filters';
 import FilmList from './FilmList.jsx';
+import './App.css';
 import { INITIAL_FILMS } from './films.mjs';
 
 
@@ -45,6 +46,9 @@ function App() {
             <FilmList films={filmToDisplay(INITIAL_FILMS)} selectedFilter={selectedFilter}/>
           </Col>
         </Row>
+        <Button variant="primary" className="rounded-circle fixed-right-bottom">
+          <i className="bi bi-plus"></i>
+        </Button>
       </Container>
     </>
   )
