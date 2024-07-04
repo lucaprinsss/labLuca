@@ -35,7 +35,7 @@ const INITIAL_FILMS = [
     new Film(2, "21 Grams", true, "2024-03-17", 5),
     new Film(3, "Star Wars", false),
     new Film(4, "The Matrix", true),
-    new Film(5, "Shrek", false, "2024-04-20", 3)
+    new Film(5, "Shrek", false, "2024-06-20", 3)
 ];
 
 export {Film, INITIAL_FILMS};
