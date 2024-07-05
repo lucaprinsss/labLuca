@@ -23,8 +23,10 @@ const filters ={
 function App() {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [mode, setMode] = useState('view');
+  const [films, setFilms] = useState(INITIAL_FILMS);
+  const [filmToEdit, setFilmToEdit] = useState(null);
 
-  const filmToDisplay = (films) => {
+  const filterFilms = (films) => {
     switch(selectedFilter){
       case 'all': return films;
       case 'fav': return films.filter(film => film.favorite);
@@ -34,6 +36,24 @@ function App() {
     }
   }
 
+  const setFilter = (filter) => {
+    setSelectedFilter(filter);
+    setMode('view');
+  }
+
+  const addFilm = (film) => {
+    const idFilm = Math.max(...films.map(film=>film.id)) + 1;
+    film.id=idFilm;
+    setFilms(films => [...films, film]);
+  }
+
+  const editFilm = (editedFilm) => {
+    setFilms(films=>{
+      films.map(film => film.id === editedFilm.id ? editedFilm : film);
+    });
+    setFilmToEdit(null);
+  }
+
   return (
     <>
       <Header />
@@ -41,18 +61,22 @@ function App() {
         <Row>
           <Col xs={3}>
             <h5 className="my-3">Filters</h5>
-            <Filters filters={filters} selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>
+            <Filters filters={filters} selectedFilter={selectedFilter} setFilter={setFilter}/>
           </Col>
           <Col xs={9} className="pt-3">
             <h1>{filters[selectedFilter]} Films</h1>
-            <FilmList films={filmToDisplay(INITIAL_FILMS)} selectedFilter={selectedFilter}/>
-            {mode==='add' && <FilmForm />}
+            <FilmList films={filterFilms(films)} setFilmToEdit={setFilmToEdit} setMode={setMode}/>
+            {mode==='add' && <FilmForm key={"form"} setMode={setMode} add={addFilm}/>}
+            {mode==='edit' && <FilmForm key={"form"} setMode={setMode} filmToEdit={filmToEdit} edit={editFilm}/>}
           </Col>
         </Row>
-        {mode==='view' && 
-        <Button variant="primary" className="rounded-circle fixed-right-bottom" onClick={()=>setMode('add')}>
-          <i className="bi bi-plus"></i>
-        </Button>}
+
+        {
+          mode==='view' && 
+          <Button variant="primary" className="rounded-circle fixed-right-bottom" onClick={()=>setMode('add')}>
+            <i className="bi bi-plus"></i>
+          </Button>
+        }
       </Container>
     </>
   )

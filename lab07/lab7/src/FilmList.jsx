@@ -5,7 +5,7 @@ function FilmList(props) {
 
   return(
     <ListGroup variant="flush">
-      {films.map((film) => <FilmRow key={film.id} film={film} />)}
+      {films.map((film) => <FilmRow key={film.id} film={film} setFilmToEdit={props.setFilmToEdit} setMode={props.setMode}/>)}
     </ListGroup>
   );
 }
@@ -13,6 +13,17 @@ function FilmList(props) {
 function FilmRow (props) {
   const {film} = props;
 
+  const renderStars = (film) => {
+    const stars = [];
+    for (let i=0; i<film.rating; i++){
+      stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star-fill" />);
+    }
+    for (let i=film.rating; i<5; i++){
+      stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star" />);
+    }
+    return stars;
+  }
+  
   return(
     <ListGroupItem>
       <Row>
@@ -23,9 +34,9 @@ function FilmRow (props) {
         </Col>
         <Col xs={3} className="text-end">{film.watchDate && film.watchDate.format('MMMM D, YYYY')}</Col>
         <Col xs={3} className="text-end">
-          <span className="text-warning">{renderStars(film.rating)}</span>
+          <span className="text-warning">{renderStars(film)}</span>
           <span className="">
-            <i className="bi bi-pencil ms-3"></i>
+            <i className="bi bi-pencil ms-3" onClick={()=>{props.setFilmToEdit(film); props.setMode('edit');}}></i>
             <i className="bi bi-trash ms-1"></i>
             </span>
         </Col>
@@ -34,17 +45,6 @@ function FilmRow (props) {
   )
 }
 
-
-const renderStars = (rating) => {
-  const stars = [];
-  for (let i=0; i<rating; i++){
-    stars.push(<i className="bi bi-star-fill" />);
-  }
-  for (let i=rating; i<5; i++){
-    stars.push(<i className="bi bi-star" />);
-  }
-  return stars;
-}
   
   export default FilmList;
   
