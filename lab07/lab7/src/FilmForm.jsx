@@ -19,7 +19,7 @@ function FilmForm (props) {
       setErrors(validationErrors);  //quindi in errors posso avere title, watchDate e/o rating
       return;
     } else {
-      setErrors([]);
+      setErrors([]);  //per essere certi che sia vuoto ma forse è superfluo
     }
 
     if(props.filmToEdit){
@@ -54,23 +54,28 @@ function FilmForm (props) {
         <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
           <Form.Control className={errors.title? "is-invalid" : ""} type="text" required={true} value={title} onChange={event=>setTitle(event.target.value)}></Form.Control>
+          <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
         </Form.Group>
         <FormGroup className="mb-3">
           <Form.Check type="checkbox" label="Favorite" checked={favorite} onChange={event=>setFavorite(event.target.checked)}></Form.Check>
         </FormGroup>
         <FormGroup className="mb-3">
-        <Form.Label>Watch date</Form.Label>
-        <Form.Control className={errors.watchDate? "is-invalid" : ""} type="date" value={watchDate} onChange={event => event.target.value ? setWatchDate(dayjs(event.target.value).format('YYYY-MM-DD')) : setWatchDate("")}></Form.Control>
+          <Form.Label>Watch date</Form.Label>
+          <Form.Control className={errors.watchDate? "is-invalid" : ""} type="date" value={watchDate} onChange={event => event.target.value ? setWatchDate(dayjs(event.target.value).format('YYYY-MM-DD')) : setWatchDate("")}></Form.Control>
+          <Form.Control.Feedback type="invalid">{errors.watchDate}</Form.Control.Feedback>
         </FormGroup>
         <FormGroup className="mb-3">
-        <Form.Label>Rating</Form.Label>
-        <Form.Control className={errors.rating? "is-invalid" : ""} type="number" min={0} max={5} step={1} value={rating} onChange={event => setRating(event.target.value==='' ? 0 : parseInt(event.target.value))}></Form.Control>
+          <Form.Label>Rating</Form.Label>
+          <Form.Control className={errors.rating? "is-invalid" : ""} type="number" min={0} max={5} step={1} value={rating} onChange={event => setRating(event.target.value==='' ? 0 : parseInt(event.target.value))}></Form.Control>
+          <Form.Control.Feedback type="invalid">{errors.rating}</Form.Control.Feedback>
         </FormGroup>
 
+        {/*
         {Object.keys(errors).length > 0 ? 
          <div>{Object.keys(errors).map((err, index)=>(<p className="text-danger mb-0">{"Error "+(index)+": "+errors[err]}</p>))}</div>
          : ''
         }
+        */}
 
         <Button className="m-3" variant="primary" type="submit">Save</Button>
         <Button className="my-3" variant="danger" onClick={()=>props.setMode('view')}>Cancel</Button>
