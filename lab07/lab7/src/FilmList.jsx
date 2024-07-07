@@ -12,17 +12,6 @@ function FilmList(props) {
 
 function FilmRow (props) {
   const {film} = props;
-
-  const renderStars = (film) => {
-    const stars = [];
-    for (let i=0; i<film.rating; i++){
-      stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star-fill" />);
-    }
-    for (let i=film.rating; i<5; i++){
-      stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star" />);
-    }
-    return stars;
-  }
   
   return(
     <ListGroupItem>
@@ -45,6 +34,16 @@ function FilmRow (props) {
   )
 }
 
+const renderStars = (film) => {
+  const stars = [];
+  for (let i=0; i<film.rating; i++){
+    stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star-fill" />);
+  }
+  for (let i=film.rating; i<5; i++){
+    stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star" />);
+  }
+  return stars;
+}
   
-  export default FilmList;
+export default FilmList;
   

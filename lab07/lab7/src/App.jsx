@@ -24,7 +24,7 @@ function App() {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [mode, setMode] = useState('view');
   const [films, setFilms] = useState(INITIAL_FILMS);
-  const [filmToEdit, setFilmToEdit] = useState(null);
+  const [filmToEdit, setFilmToEdit] = useState('');
 
   const filterFilms = (films) => {
     switch(selectedFilter){
@@ -48,10 +48,8 @@ function App() {
   }
 
   const editFilm = (editedFilm) => {
-    setFilms(films=>{
-      films.map(film => film.id === editedFilm.id ? editedFilm : film);
-    });
-    setFilmToEdit(null);
+    setFilms(films.map(film => film.id === editedFilm.id ? editedFilm : film));
+    setFilmToEdit('');
   }
 
   return (
@@ -67,7 +65,7 @@ function App() {
             <h1>{filters[selectedFilter]} Films</h1>
             <FilmList films={filterFilms(films)} setFilmToEdit={setFilmToEdit} setMode={setMode}/>
             {mode==='add' && <FilmForm key={"form"} setMode={setMode} add={addFilm}/>}
-            {mode==='edit' && <FilmForm key={"form"} setMode={setMode} filmToEdit={filmToEdit} edit={editFilm}/>}
+            {mode==='edit' && <FilmForm key={filmToEdit.id} setMode={setMode} filmToEdit={filmToEdit} edit={editFilm}/>}
           </Col>
         </Row>
 
