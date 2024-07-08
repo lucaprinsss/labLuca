@@ -15,6 +15,17 @@ function FilmRow (props) {
   const navigate = useNavigate();
   const {film} = props;
   
+  const renderStars = () => {
+    const stars = [];
+    for (let i=1; i<=film.rating; i++){
+      stars.push(<i key={`star-${film.id}-${i}`} className="bi bi-star-fill" onClick={()=>props.edit({...props.film, "rating" : i})} />);
+    }
+    for (let i=film.rating+1; i<=5; i++){
+      stars.push(<i key={`star-${film.id}-${i}`} className="bi bi-star" onClick={()=>props.edit({...props.film, "rating" : i})} />);
+    }
+    return stars;
+  }
+
   return(
     <ListGroupItem>
       <Row>
@@ -36,16 +47,7 @@ function FilmRow (props) {
   )
 }
 
-const renderStars = (film) => {
-  const stars = [];
-  for (let i=0; i<film.rating; i++){
-    stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star-fill" />);
-  }
-  for (let i=film.rating; i<5; i++){
-    stars.push(<i key={`star-${film.id}-${i+1}`} className="bi bi-star" />);
-  }
-  return stars;
-}
+
   
 export default FilmList;
   

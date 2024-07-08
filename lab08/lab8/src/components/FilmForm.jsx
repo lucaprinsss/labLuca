@@ -19,7 +19,7 @@ function FilmForm (props) {
     event.preventDefault();
     const validationErrors = validateForm();
     if(Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);  //quindi in errors posso avere title, watchDate e/o rating come attributi
+      setErrors(validationErrors);  //quindi in validationErrors posso avere title, watchDate e/o rating come attributi
       return;
     } else {
       setErrors([]);  //per essere certi che sia vuoto ma forse è superfluo
@@ -54,7 +54,7 @@ function FilmForm (props) {
   return(
     <>
       <Form className={"border border-primary rounded px-5 py-2 mt-3"} onSubmit={handleSubmit}>
-      <h4 className="mt-3 ms-3">{props.mode === 'add'? 'Add' : 'Edit'} a film</h4>
+      <h4 className="mt-3 ms-3">{props.filmToEdit ? 'Edit' : 'Add'} a film</h4>
         <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
           <Form.Control className={errors.title? "is-invalid" : ""} type="text" required={true} value={title} onChange={event=>setTitle(event.target.value)}></Form.Control>
@@ -74,7 +74,8 @@ function FilmForm (props) {
           <Form.Control.Feedback type="invalid">{errors.rating}</Form.Control.Feedback>
         </FormGroup>
 
-        <Button className="m-3" variant="primary" type="submit">Save</Button>
+        {props.filmToEdit ? <Button className="m-3" variant="success" type="submit">Update</Button>
+        : <Button className="m-3" variant="primary" type="submit">Save</Button> }
         <Button className="my-3" variant="danger" onClick={()=>navigate('/')}>Cancel</Button>
       </Form>
     </>

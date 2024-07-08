@@ -46,7 +46,7 @@ function Home (props) {
       </Row>
 
       <Button variant="primary" className="rounded-circle fixed-right-bottom" onClick={()=>navigate('/add')}>
-      <i className="bi bi-plus"></i>
+        <i className="bi bi-plus"></i>
       </Button>
     </>
 
