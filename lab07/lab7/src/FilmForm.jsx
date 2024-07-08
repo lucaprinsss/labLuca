@@ -70,7 +70,7 @@ function FilmForm (props) {
           <Form.Control.Feedback type="invalid">{errors.rating}</Form.Control.Feedback>
         </FormGroup>
 
-        {/*
+        {/* Per segnalare errori. MEGLIO USARE FEEDBACK
         {Object.keys(errors).length > 0 ? 
          <div>{Object.keys(errors).map((err, index)=>(<p className="text-danger mb-0">{"Error "+(index)+": "+errors[err]}</p>))}</div>
          : ''

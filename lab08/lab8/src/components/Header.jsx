@@ -1,13 +1,18 @@
 import { Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function Header () {
+  const navigate = useNavigate();
   return(
     
       <Container fluid className="p-3 align-items-center bg-primary text-white">
         <Row>
           <Col xs={3} className="fs-4">
-            <i className="bi bi-play-btn-fill"></i>
-            <span>Film Library</span>
+            <div className="d-inline-block p-2" onClick={()=>navigate('/')}>
+              <i className="bi bi-play-btn-fill me-2"></i>
+              <span>Film Library</span>
+            </div>
+
           </Col>
           <Col xs={6}>
             <form>
