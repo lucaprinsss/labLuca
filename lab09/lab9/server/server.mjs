@@ -1,8 +1,9 @@
 //import
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 import {check, validationResult} from 'express-validator';
-import {getAll, getFavorites, getWatchedThisMonth, getFilm, getWatchedToday, getWatchedBefore, getRatedAbove, getContainingString, deleteFilm, addFilm, resetWatchDates, updateFilm, updateFilmFavorite} from './dao.mjs';
+import {getAll, getFavorites, getWatchedThisMonth, getFilm, getWatchedToday, getWatchedBefore, getRatedAbove, getUnseen, getContainingString, deleteFilm, addFilm, resetWatchDates, updateFilm, updateFilmFavorite} from './dao.mjs';
 import Film from './Film.mjs';
 
 // init
@@ -12,10 +13,18 @@ const port = 3001;
 // middleware
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cors());
+
+// Set up and enable Cross-Origin Resource Sharing (CORS)
+const corsOptions = {
+  origin: 'http://localhost:5173'
+};
+app.use(cors(corsOptions));
+
 
 /* ROUTES */
 
-// GET /api/films?filter=...  //Se scrivessi /api/films/filter avrei poi problemi a recuperare il singolo film perché la url è òa stessa, devo usare un filtro!
+// GET /api/films?filter=...  //Se scrivessi /api/films/filter avrei poi problemi a recuperare il singolo film perché la url è la stessa, devo usare un filtro!
 app.get('/api/films', (request, response) => {
     const filter = request.query.filter;
     switch(filter){
@@ -25,14 +34,17 @@ app.get('/api/films', (request, response) => {
         case undefined:  //se non è presente il parametro filter nella query, request.query.filter ritorna undefined
             getAll().then(results => {response.json(results)}).catch(()=>response.status(500).end());
             break;
-        case 'favorite':
+        case 'fav':
             getFavorites().then(results => {response.json(results)}).catch(()=>response.status(500).end());
             break;
         case 'best':
             getRatedAbove(5).then(results => {response.json(results)}).catch(()=>response.status(500).end());
             break;
-        case 'lastMonth':
+        case 'last':
             getWatchedThisMonth().then(results => {response.json(results)}).catch(()=>response.status(500).end());
+            break;
+        case 'unseen':
+            getUnseen().then(results => {response.json(results)}).catch(()=>response.status(500).end());
             break;
         default:
             response.status(400).end();
@@ -55,7 +67,7 @@ app.get('/api/films/:id', async (request, response) => {
 app.post('/api/films', async (request, response) => {
     //validazione parametri
     try {
-        const film = new Film(-1, request.body.title, request.body.favourite, request.body.watchDate,  request.body.rating, request.body.userId);
+        const film = new Film(-1, request.body.title, request.body.favourite, request.body.watchDate, request.body.rating, request.body.userId);
         const result = await addFilm(film);
         response.json(result);
     } catch (err) {

@@ -87,6 +87,19 @@ export const getWatchedThisMonth = () => {
     });
 };
 
+export const getUnseen = () => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM films WHERE watchDate IS NULL';
+        db.all(query, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(mapRowsToFilms(rows));
+            }
+        });
+    });
+};
+
 export const getRatedAbove = (rating) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM films WHERE rating >= ?';

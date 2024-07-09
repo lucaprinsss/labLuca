@@ -36,7 +36,7 @@ content-type: application/json
 ###
 
 ## Retrieving all the films with a specified filter.
-GET http://localhost:3001/api/films?filter=filter-lastmonth HTTP/1.1
+GET http://localhost:3001/api/films?filter=last HTTP/1.1
 ###
 
 

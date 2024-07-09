@@ -1,20 +1,34 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Container } from 'react-bootstrap';
-import { useState } from "react";
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Routes, Route, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import Header from './components/Header.jsx';
 import Home from './components/Home.jsx';
 import NotFound from './components/NotFound.jsx';
 import './App.css';
-import { INITIAL_FILMS } from './films.mjs';
 import AddEditFilmLayout from './components/AddEditFilmLayout.jsx';
+import API from './API.mjs';
 
 
 function App() {
-  const [films, setFilms] = useState(INITIAL_FILMS);
+  const [films, setFilms] = useState([]);
+
+  const {pathname} = useLocation();
+
+  useEffect(() => {
+    if (pathname.startsWith('/filters')) {
+      API.getFilms(pathname.split('/').pop())
+        .then(films=>setFilms(films))
+        .catch(err=> console.log(err));
+    } else if (pathname === '/') {
+      API.getFilms('all')
+        .then(films=>setFilms(films))
+        .catch(err=> console.log(err));
+    }  //else stiamo aggiungendo o editando un film, non serve aggiornare la lista
+  }, [pathname]);
 
   const addFilm = (film) => {
     const idFilm = Math.max(...films.map(film=>film.id)) + 1;

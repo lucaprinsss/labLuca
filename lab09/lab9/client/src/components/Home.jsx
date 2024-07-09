@@ -22,7 +22,7 @@ function Home (props) {
     selectedFilter = filterId;
   }
 
-  const filterFilms = (films) => {
+  /*const filterFilms = (films) => {
     switch(selectedFilter){
       case 'all': return films;
       case 'fav': return films.filter(film => film.favorite);
@@ -30,7 +30,7 @@ function Home (props) {
       case 'last': return films.filter(film => {if(!film?.watchDate) return false; return film.watchDate.isAfter(dayjs().subtract(30,'day')); });
       case 'unseen': return films.filter(film => !film?.watchDate);
     }
-  }
+  }*/
 
   return(
     <>
@@ -41,7 +41,7 @@ function Home (props) {
         </Col>
         <Col xs={9} className="pt-3">
           <h1>{filters[selectedFilter]} Films</h1>
-          <FilmList films={filterFilms(props.films)} edit={props.edit} delete={props.delete}/>
+          <FilmList films={props.films} edit={props.edit} delete={props.delete}/>
         </Col>
       </Row>
 
