@@ -5,6 +5,7 @@ import cors from 'cors';
 import {check, validationResult} from 'express-validator';
 import {getAll, getFavorites, getWatchedThisMonth, getFilm, getWatchedToday, getWatchedBefore, getRatedAbove, getUnseen, getContainingString, deleteFilm, addFilm, resetWatchDates, updateFilm, updateFilmFavorite} from './dao.mjs';
 import Film from './Film.mjs';
+import dayjs from 'dayjs';
 
 // init
 const app = express();
@@ -67,19 +68,18 @@ app.get('/api/films/:id', async (request, response) => {
 app.post('/api/films', async (request, response) => {
     //validazione parametri
     try {
-        const film = new Film(-1, request.body.title, request.body.favourite, request.body.watchDate, request.body.rating, request.body.userId);
+        const film = new Film(-1, request.body.title, request.body.favorite, request.body.rating, dayjs(request.body.watchDate).format('YYYY-MM-DD'), request.body.userId);
         const result = await addFilm(film);
         response.json(result);
     } catch (err) {
         response.status(503).json({error: `Database error during the creation of new film: ${err}`});
     }
-    
 });
 
 app.put('/api/films/:id', async (request, response) => {
     //validazione parametri
     try {
-        const film = new Film(request.params.id, request.body.title, request.body.favourite, request.body.watchDate,  request.body.rating, request.body.userId);
+        const film = new Film(request.params.id, request.body.title, request.body.favorite,  request.body.rating, request.body.watchDate, request.body.userId);
         const result = await updateFilm(film);
         if (result.error)
                 response.status(404).json(result);

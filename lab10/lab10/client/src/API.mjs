@@ -11,5 +11,33 @@ async function getFilms(filter) {
 
 }
 
-const API = {getFilms};
+async function addFilm(film) {
+  const response =  await fetch(SERVER_URL+'/films', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(film)
+  });
+  if (response.ok) {
+    return await response.json();
+  } else {
+    throw new Error('Unable to add film');
+  }
+}
+
+async function editFilm(film) {
+  const response =  await fetch( SERVER_URL+'/films/'+film.id , {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(film)
+  });
+  console.log(JSON.stringify(film));
+  if (response.ok) {
+    return await response.json();
+  } else {
+    throw new Error('Unable to add film');
+  }
+}
+
+
+const API = {getFilms, addFilm, editFilm};
 export default API;

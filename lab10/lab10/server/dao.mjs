@@ -159,10 +159,9 @@ export const addFilm = (film) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO films (title, isFavorite, watchDate, rating, userId) VALUES (?, ?, ?, ?, ?)';
         const watchDate = film.watchDate ? film.watchDate.format("YYYY-MM-DD") : null;
-        let rating = undefined;
-        if (!film.rating || film.rating < 1 || film.rating > 5) 
-            rating = null;
-        else
+        let rating = 0;
+        if (film.rating && film.rating > 0 && film.rating < 6) 
+
             rating = film.rating;
         db.run(query, [film.title, film.favorite, watchDate, rating, film.userId], function (err) {
             if (err) {

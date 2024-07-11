@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function FilmForm (props) {
   const [title, setTitle] = useState(props.filmToEdit ? props.filmToEdit.title : '');
   const [favorite, setFavorite] = useState(props.filmToEdit ? props.filmToEdit.favorite : false);
-  const [watchDate, setWatchDate] = useState((props.filmToEdit && props.filmToEdit.watchDate) ? props.filmToEdit.watchDate.format('YYYY-MM-DD') : '');
+  const [watchDate, setWatchDate] = useState((props.filmToEdit && props.filmToEdit.watchDate) ? dayjs(props.filmToEdit.watchDate).format('YYYY-MM-DD') : '');
   const [rating, setRating] = useState(props.filmToEdit && props.filmToEdit.rating ? props.filmToEdit.rating : 0);
 
   const [errors, setErrors] = useState([]);
@@ -26,7 +26,7 @@ function FilmForm (props) {
     }
 
     if(props.filmToEdit){
-      const film = new Film(props.filmToEdit.id, title.trim(), favorite, watchDate, rating);
+      const film = new Film(props.filmToEdit.id, title.trim(), favorite, rating, watchDate);
       props.edit(film);
     } else {
       const film = new Film(-1, title.trim(), favorite, watchDate, rating);  

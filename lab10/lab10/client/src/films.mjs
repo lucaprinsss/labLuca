@@ -29,13 +29,5 @@ function Film(id, title, isFavorite = false, watchDate = null, rating = null, us
     };
 }
 
-// This data structure emulates a database of movies. In the future these data will be retrieved from the server.
-const INITIAL_FILMS = [
-    new Film(1, "Pulp Fiction", true, "2024-03-10", 5),
-    new Film(2, "21 Grams", true, "2024-03-17", 5),
-    new Film(3, "Star Wars", false),
-    new Film(4, "The Matrix", true),
-    new Film(5, "Shrek", false, "2024-06-20", 3)
-];
 
-export {Film, INITIAL_FILMS};
+export {Film};

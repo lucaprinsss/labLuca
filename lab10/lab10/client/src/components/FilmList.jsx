@@ -1,5 +1,6 @@
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 function FilmList(props) {
   const {films} = props;
@@ -34,7 +35,7 @@ function FilmRow (props) {
           <input type="checkbox" defaultChecked={film.favorite} onChange={(event) => props.edit({...props.film, "favorite" : event.target.checked})}/>
           <label className="ms-1">Favorite</label>
         </Col>
-        <Col xs={3} className="text-end">{film.watchDate && film.watchDate.format('MMMM D, YYYY')}</Col>
+        <Col xs={3} className="text-end">{film.watchDate && dayjs(props.film.watchDate).format('MMMM D, YYYY')}</Col>
         <Col xs={3} className="text-end">
           <span className="text-warning">{renderStars(film)}</span>
           <span className="">

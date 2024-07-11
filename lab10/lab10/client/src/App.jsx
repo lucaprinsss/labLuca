@@ -31,13 +31,11 @@ function App() {
   }, [pathname]);
 
   const addFilm = (film) => {
-    const idFilm = Math.max(...films.map(film=>film.id)) + 1;
-    film.id=idFilm;
-    setFilms(films => [...films, film]);
+    API.addFilm(film);
   }
 
-  const editFilm = (editedFilm) => {
-    setFilms(films.map(film => film.id === editedFilm.id ? editedFilm : film));
+  const editFilm = (film) => {
+    API.editFilm(film);
   }
 
   const deleteFilm = (filmId) => {
